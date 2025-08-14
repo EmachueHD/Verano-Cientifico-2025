@@ -1,0 +1,58 @@
+# ===============================
+# Archivos y carpetas del sistema
+# ===============================
+*.class
+*.log
+*.pyc
+*.swp
+.DS_Store
+.atom/
+.build/
+.buildlog/
+.history
+.svn/
+.swiftpm/
+migrate_working_dir/
+
+# ===============================
+# Configuración de IDEs
+# ===============================
+*.iml
+*.ipr
+*.iws
+.idea/
+#.vscode/   # Descomenta si NO quieres compartir configuraciones de VS Code
+
+# ===============================
+# Flutter / Dart / Pub
+# ===============================
+**/doc/api/
+**/ios/Flutter/.last_build_id
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.pub-cache/
+.pub/
+build/
+
+# ===============================
+# iOS (CocoaPods)
+# ===============================
+ios/Pods/
+
+# ===============================
+# Android
+# ===============================
+/android/app/debug
+/android/app/profile
+/android/app/release
+
+# ===============================
+# Archivos de simbolización
+# ===============================
+app.*.symbols
+
+# ===============================
+# Archivos de ofuscación
+# ===============================
+app.*.map.json
