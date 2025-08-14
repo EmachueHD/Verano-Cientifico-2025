@@ -80,7 +80,7 @@ class EventFormView extends StatelessWidget {
                     const SizedBox(height: 16),
 
                     const Text(
-                      'Fecha del evento',
+                      'Descripción',
                       textAlign: TextAlign.left,
                       style: TextStyle(
                         fontSize: 18,
@@ -90,14 +90,15 @@ class EventFormView extends StatelessWidget {
                       ),
                     ),
 
+
                     TextField(
                       decoration: const InputDecoration(
-                        hintText: 'DD/MM/AAAA',
                         border: OutlineInputBorder(),
                         focusedBorder: OutlineInputBorder(
                           borderSide: BorderSide(color: Color(0xFF71B6A7), width: 2.0),
                         ),
                       ),
+                      maxLines: 4,
                     ),
 
                     const SizedBox(height: 16),
@@ -126,7 +127,7 @@ class EventFormView extends StatelessWidget {
                     const SizedBox(height: 16),
 
                     const Text(
-                      'Descripción',
+                      'Fecha de inicio',
                       textAlign: TextAlign.left,
                       style: TextStyle(
                         fontSize: 18,
@@ -136,7 +137,97 @@ class EventFormView extends StatelessWidget {
                       ),
                     ),
 
+                    TextField(
+                      decoration: const InputDecoration(
+                        hintText: 'DD/MM/AAAA',
+                        border: OutlineInputBorder(),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Color(0xFF71B6A7), width: 2.0),
+                        ),
+                      ),
+                    ),
 
+                    const SizedBox(height: 16),
+
+                    const Text(
+                      'Fecha de termino',
+                      textAlign: TextAlign.left,
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.normal,
+                        fontFamily: 'TimesNewRoman',
+                        color: Color(0xFF71B6A7),
+                      ),
+                    ),
+
+                    TextField(
+                      decoration: const InputDecoration(
+                        hintText: 'DD/MM/AAAA',
+                        border: OutlineInputBorder(),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Color(0xFF71B6A7), width: 2.0),
+                        ),
+                      ),
+                    ),
+
+                    const SizedBox(height: 16),
+
+                    const Text(
+                      'Hora de inicio',
+                      textAlign: TextAlign.left,
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.normal,
+                        fontFamily: 'TimesNewRoman',
+                        color: Color(0xFF71B6A7),
+                      ),
+                    ),
+                    TextField(
+                      decoration: InputDecoration(
+                        hintText: 'HH:MM',
+                        border: OutlineInputBorder(),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Color(0xFF71B6A7), width: 2.0),
+                        ),
+                        suffixIcon: Icon(Icons.access_time),
+                      ),
+                    ),
+
+                    const SizedBox(height: 16),
+
+                    const Text(
+                      'Hora de termino',
+                      textAlign: TextAlign.left,
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.normal,
+                        fontFamily: 'TimesNewRoman',
+                        color: Color(0xFF71B6A7),
+                      ),
+                    ),
+                    TextField(
+                      decoration: InputDecoration(
+                        hintText: 'HH:MM',
+                        border: OutlineInputBorder(),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Color(0xFF71B6A7), width: 2.0),
+                        ),
+                        suffixIcon: Icon(Icons.access_time),
+                      ),
+                    ),
+
+                    const SizedBox(height: 16),
+
+                    const Text(
+                      'ID del profesor',
+                      textAlign: TextAlign.left,
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.normal,
+                        fontFamily: 'TimesNewRoman',
+                        color: Color(0xFF71B6A7),
+                      ),
+                    ),
                     TextField(
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(),
@@ -144,7 +235,6 @@ class EventFormView extends StatelessWidget {
                           borderSide: BorderSide(color: Color(0xFF71B6A7), width: 2.0),
                         ),
                       ),
-                      maxLines: 4,
                     ),
 
                     const SizedBox(height: 24),
