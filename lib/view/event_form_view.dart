@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'dart:typed_data';
+import 'package:image_picker/image_picker.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+
 
 class EventFormView extends StatefulWidget {
   const EventFormView({super.key});
@@ -18,6 +23,10 @@ class _EventFormViewState extends State<EventFormView> {
   final TextEditingController horaTerminoController = TextEditingController();
   final TextEditingController profesorIdController = TextEditingController();
 
+  // Imagen del evento
+  Uint8List? imagenBytes;
+  final ImagePicker _picker = ImagePicker();
+
   @override
   void dispose() {
     // Liberar los controllers cuando se cierre la vista
@@ -32,9 +41,26 @@ class _EventFormViewState extends State<EventFormView> {
     super.dispose();
   }
 
-  // Dentro de _EventFormViewState
+  // Función para seleccionar imagen
+  Future<void> seleccionarImagen() async {
+    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+    if (image != null) {
+      final bytes = await image.readAsBytes();
+      setState(() {
+        imagenBytes = bytes;
+      });
+    }
+  }
 
-  void enviarEventoMock() {
+  // Mock de envío de evento
+  Future<void> enviarEventoMock() async {  // 👈 cambiar void a Future<void> y agregar async
+    if (imagenBytes == null) {
+      print("No se ha seleccionado imagen");
+      return;
+    }
+
+    final String imagenBase64 = base64Encode(imagenBytes!);
+
     final Map<String, dynamic> evento = {
       "nombre": nombreController.text,
       "descripcion": descripcionController.text,
@@ -44,11 +70,24 @@ class _EventFormViewState extends State<EventFormView> {
       "hora_inicio": horaInicioController.text,
       "hora_termino": horaTerminoController.text,
       "profesor_id": profesorIdController.text,
+      "imagen": imagenBase64,
     };
 
-    // Simulamos envío al backend imprimiendo el JSON
-    print("Mock enviar evento:");
-    print(evento);
+    try {
+      final response = await http.post(
+        Uri.parse('https://escolares.free.beeceptor.com'), // tu endpoint
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode(evento),
+      );
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        print("JSON enviado correctamente!");
+      } else {
+        print("Error al enviar JSON: ${response.statusCode}");
+      }
+    } catch (e) {
+      print("Error al enviar JSON: $e");
+    }
   }
 
 
@@ -61,7 +100,7 @@ class _EventFormViewState extends State<EventFormView> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            // Imagen responsiva arriba
+            // Imagen de encabezado
             Container(
               margin: const EdgeInsets.symmetric(horizontal: 60),
               child: Image.asset(
@@ -119,7 +158,8 @@ class _EventFormViewState extends State<EventFormView> {
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                         focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Color(0xFF71B6A7), width: 2.0),
+                          borderSide:
+                          BorderSide(color: Color(0xFF71B6A7), width: 2.0),
                         ),
                       ),
                     ),
@@ -140,7 +180,8 @@ class _EventFormViewState extends State<EventFormView> {
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                         focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Color(0xFF71B6A7), width: 2.0),
+                          borderSide:
+                          BorderSide(color: Color(0xFF71B6A7), width: 2.0),
                         ),
                       ),
                       maxLines: 4,
@@ -162,7 +203,8 @@ class _EventFormViewState extends State<EventFormView> {
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                         focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Color(0xFF71B6A7), width: 2.0),
+                          borderSide:
+                          BorderSide(color: Color(0xFF71B6A7), width: 2.0),
                         ),
                       ),
                     ),
@@ -171,7 +213,6 @@ class _EventFormViewState extends State<EventFormView> {
                     // Fecha inicio
                     const Text(
                       'Fecha de inicio',
-                      textAlign: TextAlign.left,
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.normal,
@@ -187,7 +228,8 @@ class _EventFormViewState extends State<EventFormView> {
                         hintText: 'DD/MM/AAAA',
                         border: OutlineInputBorder(),
                         focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Color(0xFF71B6A7), width: 2.0),
+                          borderSide:
+                          BorderSide(color: Color(0xFF71B6A7), width: 2.0),
                         ),
                         suffixIcon: Icon(Icons.calendar_today),
                       ),
@@ -212,7 +254,6 @@ class _EventFormViewState extends State<EventFormView> {
                     // Fecha término
                     const Text(
                       'Fecha de término',
-                      textAlign: TextAlign.left,
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.normal,
@@ -228,7 +269,8 @@ class _EventFormViewState extends State<EventFormView> {
                         hintText: 'DD/MM/AAAA',
                         border: OutlineInputBorder(),
                         focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Color(0xFF71B6A7), width: 2.0),
+                          borderSide:
+                          BorderSide(color: Color(0xFF71B6A7), width: 2.0),
                         ),
                         suffixIcon: Icon(Icons.calendar_today),
                       ),
@@ -262,14 +304,15 @@ class _EventFormViewState extends State<EventFormView> {
                     ),
                     TextField(
                       controller: horaInicioController,
-                      readOnly: true, // evita que escriban manualmente
+                      readOnly: true,
                       decoration: InputDecoration(
                         hintText: 'HH:MM',
                         border: OutlineInputBorder(),
                         focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Color(0xFF71B6A7), width: 2.0),
+                          borderSide:
+                          BorderSide(color: Color(0xFF71B6A7), width: 2.0),
                         ),
-                        suffixIcon: Icon(Icons.access_time),
+                        suffixIcon: const Icon(Icons.access_time),
                       ),
                       onTap: () async {
                         TimeOfDay? pickedTime = await showTimePicker(
@@ -279,7 +322,7 @@ class _EventFormViewState extends State<EventFormView> {
 
                         if (pickedTime != null) {
                           horaInicioController.text =
-                              pickedTime.format(context); // llena el TextField
+                              pickedTime.format(context);
                         }
                       },
                     ),
@@ -297,14 +340,15 @@ class _EventFormViewState extends State<EventFormView> {
                     ),
                     TextField(
                       controller: horaTerminoController,
-                      readOnly: true, // evita que escriban manualmente
+                      readOnly: true,
                       decoration: InputDecoration(
                         hintText: 'HH:MM',
                         border: OutlineInputBorder(),
                         focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Color(0xFF71B6A7), width: 2.0),
+                          borderSide:
+                          BorderSide(color: Color(0xFF71B6A7), width: 2.0),
                         ),
-                        suffixIcon: Icon(Icons.access_time),
+                        suffixIcon: const Icon(Icons.access_time),
                       ),
                       onTap: () async {
                         TimeOfDay? pickedTime = await showTimePicker(
@@ -314,7 +358,7 @@ class _EventFormViewState extends State<EventFormView> {
 
                         if (pickedTime != null) {
                           horaTerminoController.text =
-                              pickedTime.format(context); // llena el TextField
+                              pickedTime.format(context);
                         }
                       },
                     ),
@@ -335,17 +379,60 @@ class _EventFormViewState extends State<EventFormView> {
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                         focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Color(0xFF71B6A7), width: 2.0),
+                          borderSide:
+                          BorderSide(color: Color(0xFF71B6A7), width: 2.0),
                         ),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+
+                    // Selección de imagen
+                    const Text(
+                      'Imagen del evento',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.normal,
+                        fontFamily: 'TimesNewRoman',
+                        color: Color(0xFF71B6A7),
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Center(
+                      child: Column(
+                        children: [
+                          if (imagenBytes != null)
+                            Image.memory(
+                              imagenBytes!,
+                              width: 200,
+                              height: 200,
+                              fit: BoxFit.cover,
+                            )
+                          else
+                            Container(
+                              width: 200,
+                              height: 200,
+                              color: Colors.grey[300],
+                              child: const Icon(Icons.image, size: 50),
+                            ),
+                          const SizedBox(height: 8),
+                          ElevatedButton(
+                            onPressed: seleccionarImagen,
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color(0xFF71B6A7),
+                              foregroundColor: Colors.white, // Esto hace que el texto sea blanco
+                              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12), // Mayor tamaño
+                              textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                            ),
+                            child: const Text('Seleccionar Imagen'),
+                          ),
+                        ],
                       ),
                     ),
                     const SizedBox(height: 24),
 
                     // Botón Guardar
                     ElevatedButton(
-                      onPressed: () {
-                        enviarEventoMock(); // Llama al mock en lugar de enviar a backend real
-                      },
+                      onPressed: enviarEventoMock,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFF71B6A7),
                         foregroundColor: Colors.white,
