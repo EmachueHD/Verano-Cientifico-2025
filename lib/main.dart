@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'view/event_form_view.dart';
+import 'view/Home_View.dart';
 
 void main() {
   runApp(const MyApp());
@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      home: const EventFormView(),
+      home: HomePage(),
     );
   }
 }
