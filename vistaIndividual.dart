@@ -49,7 +49,7 @@ class VistaIndividualUNPA {
 //Obtener la actividad desde un endpoint
 Future<VistaIndividualUNPA> fetchActividad() async {
   final response = await http.get(
-    Uri.parse("https://.com"), // URL del API
+    Uri.parse(" "), //ENLACE
   );
   if (response.statusCode == 200) {
     return VistaIndividualUNPA.fromJson(json.decode(response.body));
