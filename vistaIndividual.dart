@@ -49,7 +49,7 @@ class VistaIndividualUNPA {
 //Obtener la actividad desde un endpoint
 Future<VistaIndividualUNPA> fetchActividad() async {
   final response = await http.get(
-    Uri.parse("https://example.com/vistaIndividual.json"), // URL del API
+    Uri.parse("https://.com"), // URL del API
   );
   if (response.statusCode == 200) {
     return VistaIndividualUNPA.fromJson(json.decode(response.body));
@@ -72,8 +72,8 @@ class MyApp extends StatelessWidget {
       home: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.white,
-          title: Image.network(
-            'https://unpa.edu.mx/web/sites/default/files/04-UNPA_Header.png', //Imagen del logo
+          title: Image.assets(
+            'Verano-Científico-2025/assets/header.jpg', //Imagen del logo
             width: double.infinity, //Ocupa todo el ancho
             fit: BoxFit.cover, //Se ajusta al espacio
           ),
