@@ -21,6 +21,7 @@ class _EventFormViewState extends State<EventFormView> {
   final TextEditingController fechaTerminoController = TextEditingController();
   final TextEditingController horaInicioController = TextEditingController();
   final TextEditingController horaTerminoController = TextEditingController();
+  final TextEditingController tipoEventoController = TextEditingController();
   final TextEditingController profesorIdController = TextEditingController();
 
   // Imagen del evento
@@ -37,6 +38,7 @@ class _EventFormViewState extends State<EventFormView> {
     fechaTerminoController.dispose();
     horaInicioController.dispose();
     horaTerminoController.dispose();
+    tipoEventoController.dispose();
     profesorIdController.dispose();
     super.dispose();
   }
@@ -69,6 +71,7 @@ class _EventFormViewState extends State<EventFormView> {
       "fecha_termino": fechaTerminoController.text,
       "hora_inicio": horaInicioController.text,
       "hora_termino": horaTerminoController.text,
+      "tipo_evento": tipoEventoController.text,
       "profesor_id": profesorIdController.text,
       "imagen": imagenBase64,
     };
@@ -101,13 +104,14 @@ class _EventFormViewState extends State<EventFormView> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             // Imagen de encabezado
-            Container(
-              margin: const EdgeInsets.symmetric(horizontal: 60),
-              child: Image.asset(
-                'assets/header.jpg',
-                width: double.infinity,
-                height: MediaQuery.of(context).size.height * 0.25,
-                fit: BoxFit.contain,
+            Center(
+              child: Container(
+                constraints: const BoxConstraints(maxWidth: 700),
+                child: Image.asset(
+                  'assets/header.jpg',
+                  height: MediaQuery.of(context).size.height * 0.25,
+                  fit: BoxFit.contain, // o BoxFit.contain según prefieras
+                ),
               ),
             ),
             const SizedBox(height: 80),
@@ -115,7 +119,7 @@ class _EventFormViewState extends State<EventFormView> {
             Center(
               child: Container(
                 margin: const EdgeInsets.symmetric(horizontal: 20),
-                constraints: const BoxConstraints(maxWidth: 600),
+                constraints: const BoxConstraints(maxWidth: 700),
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
                   color: Colors.white,
@@ -362,6 +366,28 @@ class _EventFormViewState extends State<EventFormView> {
                         }
                       },
                     ),
+                    const SizedBox(height: 16),
+
+                    const Text(
+                      'Tipo de evento',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.normal,
+                        fontFamily: 'TimesNewRoman',
+                        color: Color(0xFF71B6A7),
+                      ),
+                    ),
+                    TextField(
+                      controller: tipoEventoController,
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide:
+                          BorderSide(color: Color(0xFF71B6A7), width: 2.0),
+                        ),
+                      ),
+                    ),
+
                     const SizedBox(height: 16),
 
                     // ID Profesor
