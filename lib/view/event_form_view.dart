@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:image_picker/image_picker.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 
 
 class EventFormView extends StatefulWidget {
@@ -63,22 +64,49 @@ class _EventFormViewState extends State<EventFormView> {
 
     final String imagenBase64 = base64Encode(imagenBytes!);
 
+
+
+DateTime parsedFechaInicio = DateFormat('dd/MM/yyyy').parse(fechaInicioController.text);
+String formattedFechaInicio = DateFormat('yyyy-MM-dd').format(parsedFechaInicio);
+DateTime parsedFechaTermino = DateFormat('dd/MM/yyyy').parse(fechaTerminoController.text);
+String formattedFechaTermino = DateFormat('yyyy-MM-dd').format(parsedFechaTermino);
+
+DateTime parsedHoraInicio = DateFormat('hh:mm a').parse(horaInicioController.text);
+String formattedHoraInicio = DateFormat('HH:mm:ss').format(parsedHoraInicio);
+DateTime parsedHoraTermino = DateFormat('hh:mm a').parse(horaTerminoController.text);
+String formattedHoraTermino = DateFormat('HH:mm:ss').format(parsedHoraTermino);
+
     final Map<String, dynamic> evento = {
       "nombre": nombreController.text,
       "descripcion": descripcionController.text,
-      "lugar": lugarController.text,
-      "fecha_inicio": fechaInicioController.text,
-      "fecha_termino": fechaTerminoController.text,
-      "hora_inicio": horaInicioController.text,
-      "hora_termino": horaTerminoController.text,
-      "tipo_evento": tipoEventoController.text,
-      "profesor_id": profesorIdController.text,
-      "imagen": imagenBase64,
+      "ubicacion": lugarController.text,
+      "fechaInicio": formattedFechaInicio,
+      "fechaTermino": formattedFechaTermino,
+      "horaInicio": formattedHoraInicio,
+      "horaTermino": formattedHoraTermino,
+      "tipoActividad": tipoEventoController.text,
+      "cveResponsable": profesorIdController.text,
+      "imagenUrl": "imagenBase64",
+      //"imagenUrl": imagenBase64,
     };
 
+
+    /*private String nombre;
+    private String descripcion;
+    private LocalDate fechaInicio;
+    private LocalDate fechaTermino;
+    private LocalTime horaInicio;   // NUEVO
+    private LocalTime horaTermino;  // NUEVO
+    private int tipoActividad;
+    private int cveResponsable;
+    private String ubicacion;
+    private String imagenUrl;*/
+     
     try {
       final response = await http.post(
-        Uri.parse('https://escolares.free.beeceptor.com'), // tu endpoint
+        Uri.parse('http://localhost:8080/api/actividades'), // tu endpoint
+        //Uri.parse('https://escolares.free.beeceptor.com'), // tu endpoint
+
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode(evento),
       );
